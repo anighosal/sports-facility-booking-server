@@ -22,4 +22,4 @@ The facility created by the admin, admin can update and delete the facility with
 
 User can create a booking facility and the booking facility user can see his booking facility with user logged in Bearer jwt access secret token.Admin view all the booking facilities with admin bearer token created by the user.
 
-live-link:https://assignment-3-orpin-chi.vercel.app/
+live-link:https://sports-facility-booking-server-beta.vercel.app/

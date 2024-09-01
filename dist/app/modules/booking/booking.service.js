@@ -13,11 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookingServices = exports.checkAvailabilityBookingsDB = void 0;
+const http_status_1 = __importDefault(require("http-status"));
 const mongoose_1 = require("mongoose");
-const booking_model_1 = require("./booking.model");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const facility_model_1 = __importDefault(require("../facility/facility.model"));
-const http_status_1 = __importDefault(require("http-status"));
+const booking_model_1 = require("./booking.model");
+const findBookingsByFacilityAndDate = (date) => __awaiter(void 0, void 0, void 0, function* () {
+    return booking_model_1.Booking.find({ date }).populate('facility').populate('user');
+});
 const createNewBookingIntoDB = (userId, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { date, startTime, endTime, facility } = payload;
     const ExistedFacility = yield facility_model_1.default.findById(facility);
@@ -72,11 +75,12 @@ const cancelBookingFromBookingDB = (id) => __awaiter(void 0, void 0, void 0, fun
 const checkAvailabilityBookingsDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { date } = payload;
     const bookingDate = date || new Date().toISOString().split('T')[0];
-    const availabilityBooking = yield booking_model_1.Booking.find({ date: bookingDate }, { startTime: 1, endTime: 1, _id: 0 });
-    return availabilityBooking;
+    const bookings = yield booking_model_1.Booking.find({ date: bookingDate }, { startTime: 1, endTime: 1, _id: 0 });
+    return bookings;
 });
 exports.checkAvailabilityBookingsDB = checkAvailabilityBookingsDB;
 exports.BookingServices = {
+    findBookingsByFacilityAndDate,
     createNewBookingIntoDB,
     getAllBookingsFromDB,
     getUserBookingsFromDB,

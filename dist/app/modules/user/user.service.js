@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const http_status_1 = __importDefault(require("http-status"));
-const AppError_1 = __importDefault(require("../../errors/AppError"));
-const user_model_1 = __importDefault(require("./user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const createToken_1 = require("../../utils/createToken");
+const http_status_1 = __importDefault(require("http-status"));
 const config_1 = __importDefault(require("../../config"));
+const AppError_1 = __importDefault(require("../../errors/AppError"));
+const createToken_1 = require("../../utils/createToken");
+const user_model_1 = __importDefault(require("./user.model"));
 const createUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.default.create(payload);
     if (!user) {
@@ -35,7 +35,7 @@ const loginAsPreUser = (email, password) => __awaiter(void 0, void 0, void 0, fu
     if (!(yield bcrypt_1.default.compare(password, user.password))) {
         throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'Invalid password');
     }
-    const token = (0, createToken_1.createToken)({ _id: user._id.toString(), role: user.role }, 
+    const token = yield (0, createToken_1.createToken)({ userId: user._id.toString(), role: user.role }, 
     // Ensure _id is a string
     config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);
     return {

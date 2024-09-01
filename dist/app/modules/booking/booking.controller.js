@@ -94,14 +94,14 @@ exports.checkAvailability = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         date: date,
     });
     if (result.length < 1) {
-        (0, sendResponse_1.default)(res, {
+        return (0, sendResponse_1.default)(res, {
             statusCode: 404,
             success: false,
             message: 'No Data Found',
-            data: result,
+            data: [],
         });
     }
-    (0, sendResponse_1.default)(res, {
+    return (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'Availability checked successfully',

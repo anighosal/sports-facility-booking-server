@@ -15,11 +15,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IsAuthenticate = void 0;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const user_model_1 = __importDefault(require("../modules/user/user.model"));
 const http_status_1 = __importDefault(require("http-status"));
-const AppError_1 = __importDefault(require("../errors/AppError"));
 const config_1 = __importDefault(require("../config"));
+const AppError_1 = __importDefault(require("../errors/AppError"));
+const user_model_1 = __importDefault(require("../modules/user/user.model"));
+const createToken_1 = require("../utils/createToken");
 const sendResponse_1 = __importDefault(require("../utils/sendResponse"));
 const auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -33,8 +33,9 @@ const auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
         if (!token) {
             return next(new AppError_1.default(http_status_1.default.BAD_REQUEST, 'No token provided'));
         }
-        const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret);
-        const user = yield user_model_1.default.findById(decoded._id).exec();
+        const decoded = (0, createToken_1.verifyToken)(token, config_1.default.jwt_access_secret);
+        // console.log(decoded);
+        const user = yield user_model_1.default.findById(decoded.userId).exec();
         if (!user) {
             return next(new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Invalid token'));
         }
@@ -42,6 +43,7 @@ const auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
         next();
     }
     catch (error) {
+        console.log(error);
         next(new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'Unauthorized'));
     }
 });
