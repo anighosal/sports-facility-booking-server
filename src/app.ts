@@ -10,7 +10,7 @@ const app: Application = express();
 //parsers
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ['http://localhost:5173'] }));
+app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 app.use(morgan('tiny'));
 
 // application routes
@@ -19,6 +19,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Wellcome to sports facility booking platform');
 });
 app.use(globalErrorHandler);
+app.options('*', cors());
 
 //Not Found
 app.use(notFound);

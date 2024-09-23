@@ -39,4 +39,6 @@ router.delete(
   BookingControllers.cancelBookingByUser,
 );
 
+router.get('/check-availability', BookingControllers.checkAvailability);
+
 export const BookingRoutes = router;

@@ -1,15 +1,20 @@
 // eslint-disable-next-line @typescript-eslint/no-this-alias
-import mongoose, { Schema } from 'mongoose';
-import { TUser } from './user.interface';
 import bcrypt from 'bcrypt';
+import mongoose, { Schema } from 'mongoose';
 import config from '../../config';
+import { TUser } from './user.interface';
 const userSchema: Schema<TUser> = new Schema(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true },
     phone: { type: String, required: true, trim: true },
-    role: { type: String, required: true, enum: ['admin', 'user'] },
+    role: {
+      type: String,
+      required: true,
+      enum: ['admin', 'user'],
+      default: 'user',
+    },
     address: { type: String, required: true },
   },
   {

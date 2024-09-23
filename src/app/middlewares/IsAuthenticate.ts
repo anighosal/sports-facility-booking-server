@@ -21,7 +21,7 @@ declare global {
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const headers = req.header('Authorization');
-    // console.log('🚀 ~ auth ~ headers:', headers);
+    console.log('🚀 ~ auth ~ headers:', headers);
     if (!headers) {
       return next(new AppError(httpStatus.BAD_REQUEST, 'No Headers found'));
     }
@@ -34,7 +34,8 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
 
     const decoded: any = verifyToken(token, config.jwt_access_secret as string);
 
-    // console.log(decoded);
+    console.log(decoded);
+
     const user = await User.findById(decoded.userId).exec();
 
     if (!user) {

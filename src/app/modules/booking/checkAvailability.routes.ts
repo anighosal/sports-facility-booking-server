@@ -1,12 +1,12 @@
-import { Router } from 'express';
+// import { Router } from 'express';
 
-import { BookingControllers } from './booking.controller';
+// import { BookingControllers } from './booking.controller';
 
-const router = Router();
+// const router = Router();
 
-router.get(
-  '/',
+// router.get(
+//   '/',
 
-  BookingControllers.checkAvailability,
-);
-export const CheckAvailabilityRoutes = router;
+//   BookingControllers.checkAvailability,
+// );
+// export const CheckAvailabilityRoutes = router;

@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { UserRoutes } from '../modules/user/user.route';
-import { facilityRoutes } from '../modules/facility/facility.route';
+import { adminRoutes } from '../modules/admin/admin.route';
 import { BookingRoutes } from '../modules/booking/booking.route';
-import { CheckAvailabilityRoutes } from '../modules/booking/checkAvailability.routes';
+import { facilityRoutes } from '../modules/facility/facility.route';
+import { UserRoutes } from '../modules/user/user.route';
 
 const router = Router();
 
@@ -20,8 +20,8 @@ const moduleRoutes = [
     route: BookingRoutes,
   },
   {
-    path: '/check-availability',
-    route: CheckAvailabilityRoutes,
+    path: '/create-admin',
+    route: adminRoutes,
   },
 ];
 

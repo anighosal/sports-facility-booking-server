@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
+import User from './user.model';
 import { UserServices } from './user.service';
 
 const createUser = catchAsync(async (req, res) => {
@@ -29,7 +30,20 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+const getUserById = async (req: Request, res: Response) => {
+  const id: string = req.params.id; // Ensure id is treated as a string
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 export const UserControllers = {
   createUser,
   loginUser,
+  getUserById,
 };

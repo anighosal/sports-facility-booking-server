@@ -1,6 +1,6 @@
-import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
 import { FacilityServices } from './facility.service';
 
 export const createFacility = catchAsync(async (req, res) => {
@@ -43,12 +43,12 @@ const deletedFacility = catchAsync(async (req, res) => {
 });
 const getFacility = catchAsync(async (req, res) => {
   const result = await FacilityServices.getFacilityFromDB();
-  if (result.length < 1) {
-    sendResponse(res, {
-      statusCode: 404,
+  if (!result || result.length === 0) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
       success: false,
-      message: 'No Data Found',
-      data: result,
+      message: 'No facilities found.',
+      data: [],
     });
   }
 
@@ -60,9 +60,32 @@ const getFacility = catchAsync(async (req, res) => {
   });
 });
 
+const getFacilityById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await FacilityServices.getFacilityByIdFromDB(id);
+
+  if (!result) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'Facility not found',
+      data: null,
+    });
+  }
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Facility retrieved successfully',
+    data: result,
+  });
+});
+
 export const FacilityControllers = {
   createFacility,
   updateFacility,
   deletedFacility,
   getFacility,
+  getFacilityById,
 };

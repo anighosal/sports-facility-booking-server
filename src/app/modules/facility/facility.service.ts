@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
-import Facility from './facility.model';
 import AppError from '../../errors/AppError';
 import { TFacility } from './facility.interface';
+import Facility from './facility.model';
 
 const createFacilityIntoDB = async (payload: TFacility) => {
   const user = await Facility.create(payload);
@@ -52,9 +52,21 @@ const getFacilityFromDB = async () => {
   }
   return facility;
 };
+
+const getFacilityByIdFromDB = async (id: string) => {
+  console.log(id);
+  const facility = await Facility.findById(id);
+
+  if (!facility) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Facility not found');
+  }
+  return facility;
+};
+
 export const FacilityServices = {
   createFacilityIntoDB,
   UpdateFacilityIntoDB,
   deleteFacilityIntoDB,
   getFacilityFromDB,
+  getFacilityByIdFromDB,
 };
