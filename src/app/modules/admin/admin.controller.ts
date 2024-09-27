@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import { createAdminIntoDB } from './admin.service';
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import { AdminServices, createAdminIntoDB } from './admin.service';
 
 const adminCreateAdminController = async (req: Request, res: Response) => {
   try {
@@ -22,7 +25,7 @@ const adminCreateAdminController = async (req: Request, res: Response) => {
       message: 'Admin created successfully',
       admin: newAdmin,
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(400).json({ message: 'This admin already exists' });
     }
@@ -31,6 +34,28 @@ const adminCreateAdminController = async (req: Request, res: Response) => {
   }
 };
 
+const getAdminDetailsById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const admin = await AdminServices.getAdminDetailsByIdFromDB(id);
+
+  if (!admin) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'Admin not found',
+      data: admin,
+    });
+  }
+
+  return sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Admin retrieved successfully',
+    data: admin,
+  });
+});
 export const AdminControllers = {
   adminCreateAdminController,
+  getAdminDetailsById,
 };

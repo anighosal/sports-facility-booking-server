@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { TUser } from '../user/user.interface';
 import User from '../user/user.model';
+import { Admin } from './admin.model';
 
 export const createAdminIntoDB = async (payload: TUser) => {
   const existingUser = await User.findOne({ email: payload.email });
@@ -34,6 +35,17 @@ export const createAdminIntoDB = async (payload: TUser) => {
   return user;
 };
 
+const getAdminDetailsByIdFromDB = async (id: string) => {
+  console.log(id);
+  const admin = await Admin.findById(id);
+
+  if (!admin) {
+    throw new AppError(httpStatus.NOT_FOUND, 'admin not found');
+  }
+  return admin;
+};
+
 export const AdminServices = {
   createAdminIntoDB,
+  getAdminDetailsByIdFromDB,
 };

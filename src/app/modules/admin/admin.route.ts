@@ -13,5 +13,11 @@ router.post(
   validateRequest(adminValidations.createAdminValidationSchema),
   AdminControllers.adminCreateAdminController,
 );
+router.get(
+  '/:id',
+  IsAuthenticate.auth,
+  IsAuthenticate.adminOnly,
+  AdminControllers.getAdminDetailsById,
+);
 
 export const adminRoutes = router;

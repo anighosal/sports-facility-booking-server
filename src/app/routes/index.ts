@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { adminRoutes } from '../modules/admin/admin.route';
 import { BookingRoutes } from '../modules/booking/booking.route';
+import { CheckAvailabilityRoutes } from '../modules/booking/checkAvailability.routes';
 import { facilityRoutes } from '../modules/facility/facility.route';
 import { UserRoutes } from '../modules/user/user.route';
 
@@ -22,6 +23,10 @@ const moduleRoutes = [
   {
     path: '/create-admin',
     route: adminRoutes,
+  },
+  {
+    path: '/check-availability',
+    route: CheckAvailabilityRoutes,
   },
 ];
 

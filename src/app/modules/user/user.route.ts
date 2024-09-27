@@ -1,4 +1,5 @@
 import express from 'express';
+import { IsAuthenticate } from '../../middlewares/IsAuthenticate';
 import validateRequest from '../../middlewares/validateRequest';
 import { UserControllers } from './user.controller';
 import { userValidations } from './user.validation';
@@ -16,6 +17,10 @@ router.post(
   UserControllers.loginUser,
 );
 
-// router.get('/user/:id', UserControllers.getUserById);
+router.get(
+  '/welcome/:id',
+  IsAuthenticate.auth,
+  UserControllers.getUserWelcomeMessage,
+);
 
 export const UserRoutes = router;

@@ -31,7 +31,8 @@ const loginAsPreUser = async (email: string, password: string) => {
   }
 
   const token = await createToken(
-    { userId: user._id.toString(), role: user.role },
+    { userId: user._id.toString(), role: user.role, name: user.name },
+
     // Ensure _id is a string
     config.jwt_access_secret as string,
     config.jwt_access_expires_in as string,
@@ -43,7 +44,18 @@ const loginAsPreUser = async (email: string, password: string) => {
   };
 };
 
+const getUserWelcomeMessageFromDB = async (id: string) => {
+  console.log(id);
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return user;
+};
+
 export const UserServices = {
   createUserIntoDB,
   loginAsPreUser,
+  getUserWelcomeMessageFromDB,
 };

@@ -71,6 +71,16 @@ const getUserBookingsFromDB = async (userId: string | Types.ObjectId) => {
   return bookings;
 };
 
+const getUserBookingsByIdFromDB = async (id: string) => {
+  console.log(id);
+  const booking = await Booking.findById(id).populate('facility');
+
+  if (!booking) {
+    throw new AppError(httpStatus.NOT_FOUND, 'booking not found');
+  }
+  return booking;
+};
+
 const cancelBookingFromBookingDB = async (id: string) => {
   const booking = await Booking.findByIdAndUpdate(
     id,
@@ -101,6 +111,7 @@ export const BookingServices = {
   createNewBookingIntoDB,
   getAllBookingsFromDB,
   getUserBookingsFromDB,
+  getUserBookingsByIdFromDB,
   cancelBookingFromBookingDB,
   checkAvailabilityBookingsDB,
 };

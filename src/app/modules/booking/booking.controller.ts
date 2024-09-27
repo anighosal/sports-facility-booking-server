@@ -269,6 +269,30 @@ class BookingControllers {
     });
   });
 
+  static getUserBookingsById = catchAsync(
+    async (req: Request, res: Response) => {
+      const { id } = req.params;
+
+      const bookings = await BookingServices.getUserBookingsByIdFromDB(id);
+
+      if (!bookings) {
+        return sendResponse(res, {
+          statusCode: httpStatus.NOT_FOUND,
+          success: false,
+          message: 'No bookings found for this user',
+          data: bookings,
+        });
+      }
+
+      return sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Bookings retrieved successfully',
+        data: bookings,
+      });
+    },
+  );
+
   static cancelBookingByUser = catchAsync(
     async (req: Request, res: Response) => {
       const { id } = req.params;

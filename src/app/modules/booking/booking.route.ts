@@ -27,11 +27,12 @@ router.get(
   BookingControllers.getUserBookings,
 );
 router.get(
-  '/user',
+  '/user/:id',
   IsAuthenticate.auth,
   IsAuthenticate.userOnly,
-  BookingControllers.getUserBookings,
+  BookingControllers.getUserBookingsById,
 );
+
 router.delete(
   '/:id',
   IsAuthenticate.auth,
